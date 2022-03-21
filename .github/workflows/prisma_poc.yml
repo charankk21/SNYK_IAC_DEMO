@@ -1,10 +1,11 @@
-name: Prisma Cloud IaC Scan Example
+name: Prisma Cloud IaC Scan Example 
 on: 
   push:
     branches: master
   pull_request:
     branches: master
 
+#Scan
 jobs:
   prisma_cloud_iac_scan:
     runs-on: ubuntu-latest
