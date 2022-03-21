@@ -26,9 +26,10 @@ jobs:
 	      if: always()
 	      with:
            sarif_file: 'results.sarif'
-	   
-      - name: Archive Scan Results
-	      uses: actions/upload-artifact@v2
-	      with:
-           name: scan-report
-	         path: 'results.sarif'
+      - name: archive
+        uses: actions/upload-artifact@v2
+        with: 
+	 	      name: scan-report
+		      path: 'result.sarif'
+           
+
