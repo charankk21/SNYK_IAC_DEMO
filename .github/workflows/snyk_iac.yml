@@ -39,7 +39,7 @@ jobs:
         run: | 
          npm install snyk-to-html -g
                # Convert JSON output from `snyk test --json` into a static HTML
-         snyk iac test */teraform/aws/*.tf --json | snyk-to-html -o result.html
+         snyk iac test /home/runner/*/*/*/teraform/aws/*.tf --json | snyk-to-html -o result.html
          mkdir downloads
          pwd
          cp -v /home/runner/*/*/*/*.html /home/runner/work/*/*/downloads
