@@ -1,4 +1,4 @@
-name: "Snyk IaC Scan"
+name: "Snyk IAC Scan"
 
 on:
   push:
@@ -6,21 +6,36 @@ on:
       - master
 
 jobs:
-  snyk-scan:
+  Pipeline-Job:
+    # Configure Environment
+    name: 'Snyk IaC Scan'
     runs-on: ubuntu-latest
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - run: npm install snyk -g # install snyk
-      - run: snyk -v
-      - run: snyk auth ${{ secrets.SNYK_TOKEN}} # snyk authentication using GH secrets
-      - run: snyk monitor
+      # Checkout Code
+      - name: Checkout Code
+        uses: actions/checkout@v1
+
+      # Install and Authenticate to Snyk
+      - name: Install Snyk & Authenticate
+        run: |
+          sudo npm install -g snyk
+          snyk auth ${SNYK_TOKEN}
+      # Run Snyk Code
+      #- name: Run Snyk Code
+       # run: |
+        #  snyk code test --sarif  > results.sarif
+        #continue-on-error: true
+      #- name: Upload SARIF file
+       # uses: github/codeql-action/upload-sarif@v1
+       # with:
+          # Path to SARIF file relative to the root of the repository
+        #  sarif_file: results.sarif
 
         # Generate the HTML report
-      - name: Run snyk test and install snyk-to-html
+      - name: Run snyk iac test and install snyk-to-html
         run: | 
          npm install snyk-to-html -g
                # Convert JSON output from `snyk test --json` into a static HTML
