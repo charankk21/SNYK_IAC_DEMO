@@ -1,51 +1,21 @@
-name: "Snyk IAC Scan"
+name: Snyk Infrastructure as Code Security Scan
 
 on:
   push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
-  Pipeline-Job:
-    # Configure Environment
-    name: 'Snyk IaC Scan'
+  snyk-iac-security:
     runs-on: ubuntu-latest
-    env:
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
     steps:
-      # Checkout Code
-      - name: Checkout Code
-        uses: actions/checkout@v1
-
-      # Install and Authenticate to Snyk
-      - name: Install Snyk & Authenticate
-        run: |
-          sudo npm install -g snyk
-          snyk auth ${SNYK_TOKEN}
-      # Run Snyk Code
-      #- name: Run Snyk Code
-       # run: |
-        #  snyk code test --sarif  > results.sarif
-        #continue-on-error: true
-      #- name: Upload SARIF file
-       # uses: github/codeql-action/upload-sarif@v1
-       # with:
-          # Path to SARIF file relative to the root of the repository
-        #  sarif_file: results.sarif
-
-        # Generate the HTML report
-      - name: Run snyk iac test and install snyk-to-html
-        run: | 
-         npm install snyk-to-html -g
-               # Convert JSON output from `snyk test --json` into a static HTML
-         snyk iac **/*.tf --json | snyk-to-html -o result.html
-         mkdir downloads
-         pwd
-         cp -v /home/runner/*/*/*/*.html /home/runner/work/*/*/downloads
-      # save the HTML in the artifact
-      - name: Use the Upload Artifact GitHub Action
-        uses: actions/upload-artifact@v2
+      - uses: actions/checkout@v2
+      - name: Run Snyk to check Infrastructure as Code files for issues
+        continue-on-error: true
+        uses: snyk/actions/iac@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          name: results
-          path: downloads
+          file: terraform/
+      - uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: snyk_iac.sarif
