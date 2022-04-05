@@ -1,7 +1,6 @@
 name: Snyk Infrastructure as Code Security Scan
 
 on:
-  push:
   workflow_dispatch:
 
 jobs:
