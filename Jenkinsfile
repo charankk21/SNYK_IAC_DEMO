@@ -22,6 +22,7 @@ pipeline{
                 }
               
         }
+	options { skipDefaultCheckout() }
        steps {
             script {
 
@@ -59,6 +60,6 @@ stage('defect-dojo')
 		}
 	}
 }
-	    options { skipDefaultCheckout() }
+
 	}
 }
