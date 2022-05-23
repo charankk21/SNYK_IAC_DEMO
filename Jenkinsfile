@@ -45,7 +45,7 @@ stage('defect-dojo')
 		{
 		catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')  {
 			def report_name='Checkov.json'
-			stash allowEmpty: true, includes: report_name, name: 'Checkov.json'
+			//stash allowEmpty: true, includes: report_name, name: 'Checkov.json'
 			ws('C:\\Users\\Administrator\\defectdojo_api\\examples\\v2')
 			{
 				unstash report_name
