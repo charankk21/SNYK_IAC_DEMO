@@ -18,10 +18,10 @@ pipeline{
                 image 'kennethreitz/pipenv:latest'
                 args '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock'
                 label 'linagent'
-                }
-       options { skipDefaultCheckout() }             
-        }
-       steps {
+                         }
+               }
+        options { skipDefaultCheckout() }      
+        steps {
             script {
                   unstash "SNYK_IAC_DEMO"
                     sh "ls -al"
