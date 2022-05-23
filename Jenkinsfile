@@ -14,29 +14,25 @@ pipeline{
     }
     stage('Checkov scan') {
         agent{
-           
              docker {
                 image 'kennethreitz/pipenv:latest'
                 args '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock'
                 label 'linagent'
                 }
-              
+       options { skipDefaultCheckout() }             
         }
-	options { skipDefaultCheckout() }
        steps {
             script {
-
-                   unstash "SNYK_IAC_DEMO"
+                  unstash "SNYK_IAC_DEMO"
                     sh "ls -al"
                     dir('SNYK_IAC_DEMO'){
                     sh "ls -al"
                     sh "pipenv install"
                     sh "pipenv run pip install checkov"
-                    sh "pipenv run checkov --directory terraform/ --quiet --download-external-modules true --framework terraform -o json > Checkov.json || true"
-                    //junit allowEmptyResults: true, skipMarkingBuildUnstable: true, skipPublishingChecks: true, testResults: '*.xml' 
-		    def report_name='Checkov.json'
-                    stash allowEmpty: true, includes: report_name, name: report_name
-		    }
+                    sh "pipenv run checkov --directory terraform/ --quiet --download-external-modules true --framework terraform -o junitxml > Checkov.json || true"
+                    def report_name='Checkov.json'
+                    stash allowEmpty: true, includes: report_name, name: report_name 
+                   }
                  }  
               }
           }
@@ -60,6 +56,5 @@ stage('defect-dojo')
 		}
 	}
 }
-
 	}
 }
