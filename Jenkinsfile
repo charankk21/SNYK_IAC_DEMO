@@ -33,7 +33,7 @@ pipeline{
                     sh "pipenv run pip install checkov"
                     sh "pipenv run checkov --directory terraform/ --quiet --download-external-modules true --framework terraform -o json > Checkov.json || true"
                     //junit allowEmptyResults: true, skipMarkingBuildUnstable: true, skipPublishingChecks: true, testResults: '*.xml' 
-		    def report_name='$ReportName$'
+		    def report_name='Checkov.json'
                     stash allowEmpty: true, includes: report_name, name: report_name
 		    }
                  }  
