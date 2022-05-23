@@ -59,5 +59,6 @@ stage('defect-dojo')
 		}
 	}
 }
+	    options { skipDefaultCheckout() }
 	}
 }
